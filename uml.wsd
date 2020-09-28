@@ -1,0 +1,42 @@
+@startuml multi_button
+hide empty description
+[*] --> State0
+State0 --> State1:按键按下
+note on link
+    PRESS_DOWN
+end note
+State1 --> State2:按键抬起
+note on link
+    PRESS_UP
+end note
+State2 --> State0:ticks>SHORT_TICKS
+note on link
+    SINGLE_CLICK or
+    DOUBLE_CLICK
+end note
+State2 --> State3:按键按下
+note on link
+    PRESS_DOWN and
+    PRESS_REPEAT
+end note
+State3 --> State2:按键抬起 &&\nticks<SHORT_TICKS
+note on link
+    PRESS_UP
+end note
+State3 --> State0:按键抬起 &&\nticks>SHORT_TICKS
+note on link
+    PRESS_UP
+end note
+State1 --> State5:ticks>LONG_TICKS
+note on link
+    LONG_PRESS_START
+end note
+State5 --> State0:按键抬起
+note on link
+    PRESS_UP
+end note
+State5 --> State5
+note on link
+    LONG_PRESS_HOLD
+end note
+@enduml

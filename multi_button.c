@@ -7,6 +7,7 @@
 
 #define EVENT_CB(ev)   if(handle->cb[ev])handle->cb[ev]((Button*)handle)
 
+//* Button链表，存放着已经启动的Button。
 //button handle list head.
 static struct Button* head_handle = NULL;
 
@@ -63,6 +64,7 @@ void button_handler(struct Button* handle)
 	/*------------button debounce handle---------------*/
 	if(read_gpio_level != handle->button_level) { //not equal to prev one
 		//continue read 3 times same new level change
+		//^ 当按键的电平变化时，保持连续DEBOUNCE_TICKS次才有效，相当于去抖动。
 		if(++(handle->debounce_cnt) >= DEBOUNCE_TICKS) {
 			handle->button_level = read_gpio_level;
 			handle->debounce_cnt = 0;
